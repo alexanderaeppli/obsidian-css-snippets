@@ -1,0 +1,121 @@
+/*
+    clean-embeds.css snippet
+
+    Removes title, link, padding, margins from embeds,
+    so they really look like the same note.
+
+    To be used with `cssclass: clean-embeds` in YAML frontmatter.
+
+    2021-08-24 Matthias C. Hormann (Moonbase59)
+
+    TODO: Find out how to correct PDF export. L/R margins & vspace too large on embeds.
+*/
+
+/* remove title and the table from the "Metatable" plugin */
+.clean-embeds {
+  .markdown-embed-title,
+  .obsidian-metatable {
+    display: none;
+  }
+
+  // Include margin between callouts in internal embeds for live preview
+  &.is-live-preview .callout {
+    margin: 1em 0;
+  }
+
+  /*
+  For links to embeds NOT to be shown, uncomment the following
+  and comment out the other section below.
+  */
+  /*
+  .markdown-embed-link,
+  .file-embed-link {
+    display: none;
+  }
+  */
+  /*
+  For links to embeds to BE shown, uncomment the following
+  until the "End link show/hide stuff" comment
+  and comment out the section above.
+  */
+
+  //Link icon
+  .markdown-embed-link,
+  .file-embed-link {
+    top: 0;
+    right: 0;
+    left: unset;
+    text-align: right;
+    border: none;
+    margin: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--text-faint);
+    cursor: pointer;
+
+    // for Ars Magna theme and others that change ::before
+    &::before {
+      display: none;
+    }
+    // Link icon size & hide
+    svg {
+      height: 24px;
+      width: 24px;
+      opacity: 0;
+      display: unset;
+    }
+  }
+  // show on hover
+  .markdown-embed:hover .file-embed-link svg,
+  .markdown-embed:hover .markdown-embed-link svg {
+    opacity: 1;
+  }
+
+  // Embed Outline on Hove
+  .markdown-embed,
+  .file-embed {
+    outline: solid transparent 2px;
+    transition: outline-color ease 200ms;
+    border-radius: var(--radius-s);
+
+    // remove border and scroll
+    // unfortunately needs !important for some themes
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    &:hover {
+      outline-color: var(--color-base-30);
+    }
+  }
+  /* End link show/hide stuff */
+
+  .markdown-embed-content,
+  .markdown-embed-content > .markdown-preview-view {
+    max-height: unset;
+    padding: 0 !important; /* !important for "Pisum" theme */
+    margin: 0;
+    border: 0;
+  }
+
+  /* remove <br> between internal embeds */
+  .markdown-preview-section div > br {
+    display: none;
+  }
+
+  /* remove vertical space added by markdown-preview-sizer */
+  div.markdown-preview-sizer.markdown-preview-section {
+    min-height: unset !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* special considerations for printing (PDF export) */
+  @media print {
+    /* remove frontmatter box if "Show frontmatter" was enabled */
+    /* Also remove metadata table from "Metatable" plugin */
+    pre.frontmatter,
+    .obsidian-metatable {
+      display: none;
+    }
+  }
+}
